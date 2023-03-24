@@ -1,0 +1,218 @@
+Base path: 'C:/Program Files/Unity/Hub/Editor/2020.3.29f1/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2020.3.29f1/Editor/Data/PlaybackEngines'
+Cmd: initializeCompiler
+
+Cmd: compileComputeKernel
+  insize=14765 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=blur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(117): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(155): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(290): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(473): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(507): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(549): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1317
+
+Cmd: compileComputeKernel
+  insize=14715 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=lay cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(156): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(289): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(472): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(506): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(548): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1439
+
+Cmd: compileComputeKernel
+  insize=14735 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(156): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(291): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(308): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(474): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(508): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(550): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39544
+
+Cmd: compileComputeKernel
+  insize=15016 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Main cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(292): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(476): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(554): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=310
+
+Cmd: compileComputeKernel
+  insize=15342 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(484): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(562): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=15342 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Main cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(484): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(562): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=310
+
+Cmd: compileComputeKernel
+  insize=15402 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(313): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(484): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(562): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39496
+
+Cmd: compileComputeKernel
+  insize=15417 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=fillTexture cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=581
+
+Cmd: compileComputeKernel
+  insize=15420 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=fillTexture cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=581
+
+Cmd: compileComputeKernel
+  insize=15416 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=blur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1154
+
+Cmd: compileComputeKernel
+  insize=15439 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=fillTexture cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 2 plat 4 at Shader.compute(313): syntax error: unexpected token '('
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=0 outsize=0
+
+Cmd: compileComputeKernel
+  insize=15439 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Main cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 2 plat 4 at Shader.compute(313): syntax error: unexpected token '('
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=0 outsize=0
+
+Cmd: compileComputeKernel
+  insize=15439 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=15439 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(313): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=40484
+
+Cmd: compileComputeKernel
+  insize=15431 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=blur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1154
+
+Cmd: compileComputeKernel
+  insize=15431 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(313): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39496
+
+Cmd: compileComputeKernel
+  insize=15428 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=fillTexture cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=581
+
+Cmd: compileComputeKernel
+  insize=15431 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(313): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(485): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39496
+
+Cmd: compileComputeKernel
+  insize=15467 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(118): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(296): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(487): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(565): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=15389 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(565): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=15395 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=lay cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(299): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(489): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(566): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1533
+
+Cmd: compileComputeKernel
+  insize=15505 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(567): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=15505 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=blur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(567): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1154
+
+Cmd: compileComputeKernel
+  insize=15561 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(315): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(567): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39500
+
+Cmd: compileComputeKernel
+  insize=15561 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(315): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(567): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=39500
+
+Cmd: compileComputeKernel
+  insize=15308 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=heightMapBlur cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(488): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(525): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(563): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=1455
+
+Cmd: compileComputeKernel
+  insize=14953 file=C:/Users/User 1/Desktop/Code Stuff/Unity Projects/AgentProject/Assets/Scripts/Shader.compute kernel=Update cachingPP=1 ppOnly=0 stripLineD=0 buildPlatform=19 km=<UNITY_VERSION=202039> pKW=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR uKW=SHADER_STAGE_COMPUTE platform=d3d11 flags=0  error: 1 plat 4 at (0): Program 'Update', warning X4714: sum of temp registers and indexable temp registers times 1024 threads exceeds the recommended total 16384.  Performance may be reduced
+  error: 1 plat 4 at Shader.compute(120): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(298): potentially unintended use of a comma expression in a variable initializer
+  error: 1 plat 4 at Shader.compute(315): pow(f, e) will not work for negative f, use abs(f) or conditionally handle negative values if you expect them
+  error: 1 plat 4 at Shader.compute(474): implicit truncation of vector type
+  error: 1 plat 4 at Shader.compute(511): signed/unsigned mismatch, unsigned assumed
+  error: 1 plat 4 at Shader.compute(549): signed/unsigned mismatch, unsigned assumed
+ ok=1 outsize=40668
+

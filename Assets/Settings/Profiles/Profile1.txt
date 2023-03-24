@@ -1,0 +1,68 @@
+{
+    "height": 1080,
+    "width": 1920,
+    "NUMAGENTS": 1000000,
+    "speed": 1.5,
+    "blurSpread": 1,
+    "blurAmountHeight": 20,
+    "blurAmount": 15,
+    "speciesOpacity": 2,
+    "heightSpeciesOpacity": 2,
+    "steerControl": 1,
+    "velocityScale": 2.5,
+    "accelerationScale": 70,
+    "sensorDistance": 20,
+    "maxSensorDistance": 50.0,
+    "minSensorDistance": 5.0,
+    "sensorOffset": 1.0,
+    "foodPickupRate": 0.0,
+    "rotateAmount": 10,
+    "hungerDecay": 1.0,
+    "sensorOffsets": 50,
+    "turnAngle": 30,
+    "noiseScale": 1000.0,
+    "specLine": 0.10000000149011612,
+    "drawRadius": 5,
+    "useNoise": false,
+    "endingSpec": {
+        "r": 1,
+        "g": 1,
+        "b": 0,
+        "a": 0
+    },
+    "startingSpec": {
+        "r": 0,
+        "g": 0,
+        "b": 1,
+        "a": 1
+    },
+    "heightSpec1": {
+        "r": 1,
+        "g": 1,
+        "b": 0,
+        "a": 0
+    },
+    "heightSpec2": {
+        "r": 0,
+        "g": 0,
+        "b": 1,
+        "a": 1
+    },
+    "fieldColor": {
+        "r": 1,
+        "g": 0.945098039,
+        "b": 0.788235294,
+        "a": 1
+    },
+    "middleStart": false,
+    "useSensors": true,
+    "useInertia": false,
+    "useScaler": true,
+    "useAcceleration": false,
+    "useCircleSense": false,
+    "reset": false,
+    "saveCSV": false,
+    "twoSpecies": false,
+    "displayHeightMap": false,
+    "randomColors": false
+}

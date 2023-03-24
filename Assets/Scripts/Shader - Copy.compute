@@ -1,0 +1,387 @@
+#include "Noise.compute"
+
+// Each #kernel tells which function to compile; you can have many kernels
+
+#pragma kernel Main 
+#pragma kernel Update
+#pragma kernel heightMapBlur
+
+
+static const float4 identity = float4(1,1,1,1);
+
+
+
+RWTexture2D<float4> HeightMap;
+
+RWTexture2D<float4> TrailMap;
+
+RWTexture2D<float4> SpeciesMap;
+
+
+struct Agent{
+    float2 pos;
+    float2 v;
+    float4 species; 
+    float speed;
+    float angle;
+    float sensorDist;
+    float foodState;
+    float4 speciesIndex;
+    uint hasFood;
+};
+
+struct Cell{
+    float2 vel;
+    float amount;
+    uint foodAmount;
+    float4 speciesDensity;
+};
+
+RWStructuredBuffer<Agent> Agents;
+RWStructuredBuffer<Cell> Cells;
+
+
+float DTime;
+int clock;
+int NumAgents;
+int WIDTH;
+int HEIGHT;
+float noiseSeed;
+float speed;
+float control1;
+float blurAmountHeight;
+float control2;
+float randControl;
+float steerControl;
+float accelerationScale;
+float sensorDistance;
+
+float rotateAmount;
+float foodPickupRate;
+float hungerDecay;
+int drawRadius;
+float whiteAdjustment;
+float blackAdjustment;
+float noiseScale;
+float specLine;
+bool mouseActive;
+bool useNoise;
+float2 mousePos;
+float4 endingSpecies;
+float4 startingSpecies;
+float coordScaleMin;
+float maxSensorDistance;
+float speciesOpacity;
+
+
+float R;
+float G;
+float B;
+int brightness;
+int seed;
+
+float hash(uint state)
+{
+    state ^= 2747636419u;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+    state ^= state >> 16;
+    state *= 2654435769u;
+    return state/4294967295.0000;
+}
+[numthreads(16,16,1)]
+void heightMapBlur (uint3 id : SV_DispatchThreadID)
+{   
+
+    if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
+		return;
+	}
+
+	float4 sum = 0;
+	float4 originalCol = HeightMap[id.xy];
+	
+
+	for (int offsetX = -1; offsetX <= 1; offsetX ++) {
+		for (int offsetY = -1; offsetY <= 1; offsetY ++) {
+			int sampleX = min(WIDTH-1, max(0, id.x + offsetX));
+			int sampleY = min(HEIGHT-1, max(0, id.y + offsetY));
+			sum += HeightMap[int2(sampleX,sampleY)];
+		}
+	}
+
+    float diffuseRate = control1;
+    float decayRate = blurAmountHeight;
+
+	float4 blurredCol = sum / 9;
+
+	float diffuseWeight = saturate(float(diffuseRate * DTime));
+	blurredCol = originalCol * (1 - diffuseWeight) + blurredCol * (diffuseWeight);    
+
+	HeightMap[id.xy] = max(0, blurredCol - decayRate * DTime);
+}
+
+[numthreads(16,16,1)]
+void Main (uint3 id : SV_DispatchThreadID)
+{   
+    int indez =  (id.y * WIDTH) + id.x;
+    if(mouseActive){
+        if(length(id.xy - mousePos) < drawRadius){
+            Cells[indez].foodAmount = 255;
+        }
+    }
+
+    
+
+    if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
+		return;
+	}
+
+	float4 sum = 0;
+	float4 originalCol = TrailMap[id.xy];
+	
+
+	for (int offsetX = -1; offsetX <= 1; offsetX ++) {
+		for (int offsetY = -1; offsetY <= 1; offsetY ++) {
+			int sampleX = min(WIDTH-1, max(0, id.x + offsetX));
+			int sampleY = min(HEIGHT-1, max(0, id.y + offsetY));
+			sum += TrailMap[int2(sampleX,sampleY)];
+		}
+	}
+
+    float diffuseRate = control1;
+    float decayRate = control2;
+
+    //animated blur
+    // float decayRate = (clock%50)/7;
+	float4 blurredCol = sum / 9;
+
+	float diffuseWeight = saturate(float(diffuseRate * DTime));
+	blurredCol = originalCol * (1 - diffuseWeight) + blurredCol * (diffuseWeight);    
+
+	TrailMap[id.xy] = max(0, blurredCol - decayRate * DTime);
+}
+
+
+float4 sniff(float2 p, float r, float ang, float2 vel, float4 species, float randomSeed, float speciesDist, float foodState){
+    float2 inertia = vel/length(vel);
+    
+    float randomValue = hash(randomSeed)-0.5;
+
+    float sensDist = (speciesDist+0.001)*sensorDistance;
+    float distanceVariation = randomValue;
+
+    float2 randNudge = float2(cos(randomValue), sin(randomValue));
+    float finalDist = sensDist+distanceVariation;
+
+    // float2 offset = float2(cos(ang)*speciesDist, sin(ang)*speciesDist);
+    float2 offset = float2(cos(ang)*sensDist, sin(ang)*sensDist);
+
+    float2 sensPos = p + offset;
+    
+    float4 locAmount;
+    float weight;
+    float2 weightedCoords;
+    float cum = 0;
+    int index = 1;
+    float food;
+    float4 match = startingSpecies;
+    float4 combined;
+    float4 white = float4(1, 1, 1, 1);
+    float4 black = float4(0, 0, 0, 0);
+    float selfSpecW;
+    float specW;
+    int indexMatch = 1;
+    for(int dy = -1; dy<2; dy++){
+        for(int dx = -1; dx<2; dx++){
+            
+            // int sampleX = sensPos.x + dx;
+            int sampleX = min(WIDTH-1, max(0, sensPos.x + dx));
+			// int sampleY = sensPos.y + dy;
+			int sampleY = min(HEIGHT-1, max(0, sensPos.y + dy));
+            
+            locAmount = TrailMap[uint2(sampleX, sampleY)];
+            // match = startingSpecies;
+            // if(foodState > specLine){
+            //     indexMatch = 1;
+            //     match = startingSpecies;
+            // }
+            // else{
+            //     indexMatch = 1;
+            //     match = endingSpecies;
+            // }
+
+            // float specWeight = dot(match, locAmount);  
+            float specWeight = distance(match, locAmount);
+
+            float2 unit = float2(dx, dy);
+
+            int py = sensPos.y + unit.y;
+            int px = sensPos.x + unit.x;
+            
+            index = px + (py * WIDTH);
+            Cell c = Cells[index];
+
+            float foodAmount = (c.foodAmount/255)+1;
+            
+            weight = specWeight;
+            cum += c.amount;
+
+            weightedCoords += float2(dx/(weight), dy/(weight));
+            if(c.foodAmount > 0){
+                c.foodAmount = max(0, c.foodAmount-foodPickupRate);
+                food = c.foodAmount-foodPickupRate;
+                Cells[index] = c;
+            }
+        }
+    }
+
+    float coordScale = (steerControl * DTime)/7.99;
+
+    // float3 noiseInput = float3(p.x/noiseScale+noiseSeed, p.y/noiseScale+noiseSeed, clock/(noiseScale*2)+noiseSeed);
+    // float noise = snoise(noiseSeed  + (noiseInput));
+
+    // if(useNoise){
+    //     coordScale = (steerControl * noise * DTime)/7.99;
+    //     coordScale = min(coordScaleMin, coordScale);
+    // }
+
+    weightedCoords *= coordScale;
+    weightedCoords += sensPos;
+
+    cum /= (accelerationScale);
+    
+    float x = weightedCoords.x - p.x;
+    float y = weightedCoords.y - p.y;
+    float newAngle = atan2(y, x);
+ 
+    float d = distance(weightedCoords + sensPos, sensPos);
+    float4 res = float4(newAngle, cum, d, food);
+    return res;
+}
+
+[numthreads(32,1,1)]
+void Update (uint3 id : SV_DispatchThreadID){
+    int indez = id.x + (WIDTH * id.y);
+    // int indez = (id.x + HEIGHT) * id.y;
+    // int indez = id.y * WIDTH + id.x;
+    
+
+    // if(indez > NumAgents){
+    //     return;
+    // }
+    Agent a = Agents[indez];
+
+    a.sensorDist = sensorDistance;
+
+    // float NS = noiseSeed * 2;
+    // float3 noiseInput = float3(a.pos.x/NS+2/noiseSeed, a.pos.y/noiseScale+NS, clock/(noiseScale*2)+NS);
+    
+    // float noise = snoise(noiseSeed  + (noiseInput));
+    // if(useNoise){
+    //     a.sensorDist = (max(sensorDistance * noise, maxSensorDistance));
+    // }
+
+    float seed2 = (a.pos.y * WIDTH) + a.pos.x;
+    float r = hash(seed2);
+    
+    float r2 = (((hash(seed2)*6.28)-3.14)%3.1415)*(rotateAmount/100);
+    a.angle+=r2;
+
+    float2 n = float2(cos(r)*(randControl/10), sin(r)*(randControl/10));
+
+    float4 res = sniff(a.pos, r, a.angle, a.v, a.species, seed2, a.sensorDist, a.foodState);
+
+    float food = res.w;
+    
+    //if food is sniffed, then go to ending species
+    if(food > 0){
+        a.foodState = 1;
+        a.species = endingSpecies;
+        a.speciesIndex = float4(0, 1, 0, 0);
+        a.hasFood += food;
+    }
+
+    float mag = res.y;
+    float dist = res.z;
+    a.angle = res.x;
+
+    float vSpeed = a.speed * (speed/10);
+    float2 velocity = float2(cos(a.angle) * vSpeed, sin(a.angle) * vSpeed);    
+
+    float aSpeed = mag;
+    float2 acc = float2(cos(a.angle) * aSpeed, sin(a.angle) * aSpeed);
+
+    velocity *= DTime;
+
+    float2 finalPos = a.pos + velocity;
+    float4 posSample = TrailMap[int2(finalPos.x, finalPos.y)];
+    
+    float4 match;
+    if(a.foodState > specLine){
+        match = startingSpecies;
+    }else{
+        match = startingSpecies;
+    }
+
+
+    float vScale = dot(match, posSample);
+    
+    // if(vScale < 0.5){
+    //     velocity *=0.050;
+    // }
+
+    // int index = a.pos.y * (a.pos.x + HEIGHT);
+    // velocity*=vScale;
+
+    int index = (a.pos.y * WIDTH) + a.pos.x;
+    
+    Cells[index].amount -= 1;
+
+    a.pos += velocity;
+    a.v += velocity;
+    a.v *= 0.0;
+    
+    if(a.pos.x < 0){
+        a.pos.x = WIDTH - abs(0-a.pos.x);
+    }
+    if(a.pos.x > WIDTH){
+        a.pos.x = 0 + abs(a.pos.x - WIDTH);
+    }
+    if(a.pos.y < 0){
+        a.pos.y = HEIGHT - abs(a.pos.y);
+    }
+    if(a.pos.y > HEIGHT){
+        a.pos.y = 0 + abs(a.pos.y - HEIGHT);
+    }
+
+    // index = a.pos.x * HEIGHT + a.pos.y;
+    index = (a.pos.y * WIDTH) + a.pos.x;
+    Cells[index].amount += 1;
+
+    float fD = hungerDecay/100;
+    //if you have food, then follow starting
+    
+    a.species = lerp(a.species, startingSpecies, 1-a.foodState);
+    a.foodState = max(a.foodState-fD, 0);
+    if(a.foodState < specLine){
+        a.speciesIndex = float4(1, 0, 0, 0);
+    }
+    
+    index = (a.pos.x * HEIGHT) + a.pos.y;
+
+    Cell c = Cells[index];
+    a.hasFood = 10;
+    // Agents[indez] = a;
+
+    // Agents[indez] = a;
+    // TrailMap[int2(a.pos.x, a.pos.y)] += a.species*(utility2/10);
+    TrailMap[int2(a.pos.x, a.pos.y)] += a.species*(speciesOpacity/10);
+    // HeightMap[int2(a.pos.x, a.pos.y)] = snoise(a.pos/1000);
+    // TrailMap[int2(a.pos.x, a.pos.y)] = a.species;
+    
+    HeightMap[int2(a.pos.x, a.pos.y)] += .26;
+    
+}
+
+

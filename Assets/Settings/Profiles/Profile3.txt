@@ -1,0 +1,40 @@
+{
+    "height": 1080,
+    "width": 1920,
+    "NUMAGENTS": 500000,
+    "speed": 20.0,
+    "blurSpread": 20.0,
+    "blurAmountHeight": 20.0,
+    "blurAmount": 0.800000011920929,
+    "speciesOpacity": 10.0,
+    "randControl": 0.0,
+    "steerControl": 100.0,
+    "coordScaleMin": 5.0,
+    "accelerationScale": 10000000.0,
+    "sensorDistance": 5.0,
+    "maxSensorDistance": 1.0,
+    "foodPickupRate": 0.0,
+    "rotateAmount": 2.0,
+    "hungerDecay": 1.0,
+    "whiteAdjustment": 1.0,
+    "blackAdjustment": 1.0,
+    "noiseScale": 500.0,
+    "specLine": 0.10000000149011612,
+    "drawRadius": 30,
+    "useNoise": false,
+    "endingSpec": {
+        "r": 1.0,
+        "g": 0.0,
+        "b": 0.0,
+        "a": 1.0
+    },
+    "startingSpec": {
+        "r": 0.0,
+        "g": 1.0,
+        "b": 1.0,
+        "a": 0.0
+    },
+    "middleStart": false,
+    "displayHeightMap": false,
+    "randomColors": false
+}

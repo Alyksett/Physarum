@@ -1,13 +1,25 @@
-// Each #kernel tells which function to compile; you can have many kernels
-#pragma kernel Main
+#include "Noise.compute"
+
+#pragma kernel Main 
 #pragma kernel Update
+#pragma kernel heightMapBlur
+#pragma kernel lay
+#pragma kernel blur
+#pragma kernel fillTexture
+
 
 static const float4 identity = float4(1,1,1,1);
+static const float PI = 3.14159265;
+static const float TAU = PI*2;
 
 
 
-RWTexture2D<float4> AgentMap;
+RWTexture2D<float4> HeightMap;
+
 RWTexture2D<float4> TrailMap;
+
+RWTexture2D<float4> SpeciesMap;
+
 
 struct Agent{
     float2 pos;
@@ -15,9 +27,21 @@ struct Agent{
     float4 species; 
     float speed;
     float angle;
+    float sensorDist;
+    float foodState;
+    float4 speciesIndex;
+    uint hasFood;
+};
+
+struct Cell{
+    float2 vel;
+    float amount;
+    uint foodAmount;
+    float4 speciesDensity;
 };
 
 RWStructuredBuffer<Agent> Agents;
+RWStructuredBuffer<Cell> Cells;
 
 
 float DTime;
@@ -25,13 +49,44 @@ int clock;
 int NumAgents;
 int WIDTH;
 int HEIGHT;
+float noiseSeed;
 float speed;
 float control1;
+float blurAmountHeight;
 float control2;
-float randControl;
 float steerControl;
+float velocityScale;
 float accelerationScale;
+float sensorDistance;
+float maxSensorDistance;
+float minSensorDistance;
+float sensorOffset;
+float rotateAmount;
+float foodPickupRate;
+float hungerDecay;
+int drawRadius;
+float sensorOffsets;
+float turnAngle;
+float noiseScale;
+float specLine;
+bool mouseActive;
+bool useNoise;
+bool useSensors;
+bool middleStart;
+bool useInertia;
+bool useScaler;
+bool useAcceleration;
+bool useCircleSense;
+bool reset;
+float2 mousePos;
+float4 endingSpecies;
+float4 startingSpecies;
+float4 fieldColor;
+float4 heightSpec1;
+float4 heightSpec2;
 
+float speciesOpacity;
+float heightSpeciesOpacity;
 
 
 float R;
@@ -51,142 +106,449 @@ float hash(uint state)
     return state/4294967295.0000;
 }
 
+
+float randomAngle(Agent a, float seed){
+    float seed2 = (a.pos.y * WIDTH) + a.pos.x * seed;
+    float r = hash(seed2);
+    float randomRotate = (((hash(seed2)*6.28)-3.14)%3.1415)*(rotateAmount/100);
+    return randomRotate;
+}
+
 [numthreads(16,16,1)]
-void Main (uint3 id : SV_DispatchThreadID)
-{
-    if (id.x < 0 || id.x >= (uint)WIDTH || id.y < 0 || id.y >= (uint)HEIGHT) {
+void heightMapBlur (uint3 id : SV_DispatchThreadID)
+{   
+    if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
 		return;
 	}
+
 	float4 sum = 0;
-	float4 originalCol = TrailMap[id.xy];
+	float4 originalCol = HeightMap[id.xy];
 	
 
 	for (int offsetX = -1; offsetX <= 1; offsetX ++) {
 		for (int offsetY = -1; offsetY <= 1; offsetY ++) {
 			int sampleX = min(WIDTH-1, max(0, id.x + offsetX));
 			int sampleY = min(HEIGHT-1, max(0, id.y + offsetY));
-			sum += TrailMap[int2(sampleX,sampleY)];
+			sum += HeightMap[int2(sampleX,sampleY)];
 		}
 	}
+
     float diffuseRate = control1;
-    float decayRate = control2;
+    float decayRate = blurAmountHeight;
+
 	float4 blurredCol = sum / 9;
 
 	float diffuseWeight = saturate(float(diffuseRate * DTime));
 	blurredCol = originalCol * (1 - diffuseWeight) + blurredCol * (diffuseWeight);    
 
-	// AgentMap[id.xy] = blurredCol * saturate(1 - decayRate * DTime);
-	TrailMap[id.xy] = max(0, blurredCol - decayRate * DTime);
+	HeightMap[id.xy] = max(0, blurredCol - decayRate * DTime);
 }
-
-
-float3 sniff(float2 p, float r, float ang, float2 vel, float4 species){
-    float2 inertia = vel/length(vel);  
-    float sensDist = 10;
-    float2 sensPos = p + float2(cos(ang)*sensDist, sin(ang)*sensDist);
-    float4 locAmount;
-    float weight;
-    float2 weightedCoords;
-    float cum = 0.0;
-
-    for(int dy = -2; dy<3; dy++){
-        for(int dx = -2; dx<3; dx++){
-            // if(abs(dy) < 3 || abs(dx) < 3){continue;}
-            if(dx==0&&dy==0){
-                continue;
-            }
-            locAmount = TrailMap[uint2(dx + sensPos.x, dy + sensPos.y)];
-            float2 unit = float2(dx, dy);
-            
-            float specWeight = dot(species*2-1, locAmount);
-            float w = (max(0, dot(unit, inertia))/distance(unit, sensPos));
-            
-            // weight = ((length(locAmount))*2 + w)/2;
-            weight = specWeight;
-            
-            
-            cum += weight;
-
-            weightedCoords += float2(dx*weight,dy*weight);
-        }
-    }
-    weightedCoords/=7.9;
-    weightedCoords *= DTime;
-    weightedCoords*=steerControl;
-    weightedCoords += sensPos;
-    
-    cum /= accelerationScale;
-    
-    float x = weightedCoords.x - p.x;
-    float y = weightedCoords.y - p.y;
-    float newAngle = atan2(y, x);
-    
-    float3 res = float3(newAngle, cum, distance(weightedCoords, sensPos));
-    return res;
-}
-
 
 [numthreads(16,16,1)]
-void Update (uint3 id : SV_DispatchThreadID){
-        
-    Agent a = Agents[id.x * WIDTH + id.y];
-
-    float seed = a.pos.y * a.pos.x + HEIGHT;
-    float r = ((hash(seed)*6.28)-3.1415)*randControl;
-    // a.angle += r;
+void Main (uint3 id : SV_DispatchThreadID)
+{   
+    int index =  (id.y * WIDTH) + id.x;
     
-    float2 n = float2(cos(r)*randControl, sin(r)*randControl);
-
-    float3 res = sniff(a.pos, r,  a.angle, a.v, a.species);
-
-
-
-    float mag = res.y;
-    a.angle = res.x;
-    float dist = res.z;
-    
-    float inertia = max(0.1, mag*mag);
-    
-    float scaling = speed * a.speed ;
-
-    float finalSpeed = scaling;
-
-    float2 velocity = float2(cos(a.angle) * finalSpeed * DTime, sin(a.angle) * finalSpeed * DTime);
-    
-    a.pos += a.v + velocity ;
-    a.v += velocity;
-    
-    a.v *= .5;
-    
-
-    if(a.pos.x < 0){
-        a.pos.x = WIDTH;
-    }
-    if(a.pos.x > WIDTH){
-        a.pos.x = 0;
-    }
-    if(a.pos.y < 0){
-        a.pos.y = HEIGHT;
-    }
-    if(a.pos.y > HEIGHT){
-        a.pos.y = 0;
-    }
-    
-    // float4 cur = TrailMap[int2(a.pos.x, a.pos.y)];
-    // if(clock>150){
-    //     // if(dot(a.species, cur) < 0.001){
-    //     if(cur.x == 1){
-    //         a.species = float4(0, 1, 0, 0);
-            
+    // if(mouseActive){
+    //     if(length(id.xy - mousePos) < drawRadius){
+    //         Cells[index].foodAmount = 255;
     //     }
     // }
 
-    Agents[id.x * WIDTH + id.y] = a;
-    // AgentMap[int2(a.pos.x, a.pos.y)] = a.color;
-    float am = 1;
+    // if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
+	// 	return;
+	// }
 
-    AgentMap[int2(a.pos.x, a.pos.y)] = float4(am, am, am, am);
-    // TrailMap[int2(a.pos.x, a.pos.y)] = a.color;
-    TrailMap[int2(a.pos.x, a.pos.y)] = a.species;
+	float4 sum = 0;
+	float4 originalCol = TrailMap[id.xy];
+	
+	for (int offsetX = -1; offsetX <= 1; offsetX ++) {
+		for (int offsetY = -1; offsetY <= 1; offsetY ++) {
+            int sampleX = id.x + offsetX;
+			int sampleY = id.y + offsetY;
+            sum += TrailMap[int2(sampleX,sampleY)];
+		}
+	}
+	float4 blurredCol = sum / 9;
+    
+    float diffuseRate = control1;
+    float decayRate = control2/10;
+
+	float diffuseWeight = saturate(float(diffuseRate * DTime));
+
+	blurredCol = originalCol * (1 - diffuseWeight) + blurredCol * (diffuseWeight);    
+
+	TrailMap[id.xy] = max(0, blurredCol - decayRate * DTime);
+	// HeightMap[id.xy] = float4(1, 1, 1, 1);
+}
+
+
+
+float2 vectorSniff(float2 p, float r, float ang, float2 vel, float4 species, float randomSeed, float speciesDist, float foodState){
+    float2 inertia = vel/length(vel);
+    float sensDist = (speciesDist+0.001)*sensorDistance;
+    float finalDist = sensDist;
+
+    // float2 offset = float2(cos(ang)*speciesDist, sin(ang)*speciesDist);
+    float2 offset = float2(cos(ang)*sensDist, sin(ang)*sensDist);
+
+    float2 sensPos = p + offset;
+    
+    float4 locAmount;
+    int sampleX;
+    int sampleY;
+    float weight;
+    float2 weightedCoords;
+    float2 unit;
+    int py;
+    int px;
+    float food;
+    float avg = 0;
+    for(int dy = -1; dy<2; dy++){
+        for(int dx = -1; dx<2; dx++){
+            if(dy == 0 && dx == 0){
+                continue;
+            }
+            
+            sampleX = min(WIDTH-1, max(0, sensPos.x + dx));
+			sampleY = min(HEIGHT-1, max(0, sensPos.y + dy));
+            locAmount = TrailMap[uint2(sampleX, sampleY)];
+            weight = dot(species, locAmount);
+            // weight = dot(locAmount, identity);
+            unit = float2(dx, dy);
+            weightedCoords += unit*(1-weight);
+ 
+            py = sensPos.y + unit.y;
+            px = sensPos.x + unit.x;
+ 
+            
+            int index = px + (py * WIDTH);
+            Cell c = Cells[index];
+            float foodAmount = (c.foodAmount/255)+1;
+            if(c.foodAmount > 0){
+                c.foodAmount = max(0, c.foodAmount-foodPickupRate);
+                food = c.foodAmount-foodPickupRate;
+                Cells[index] = c;
+            }
+            avg += dot(species, locAmount);
+        }
+}
+    // float coordScale = .125;
+    float coordScale = steerControl;
+    
+    float NS = noiseSeed;
+    float3 noiseInput = float3((p.x/noiseScale)+NS, (p.y/noiseScale)+NS, (clock/noiseScale)+NS);
+    float noise = (snoise(noiseInput) * steerControl);
+    if(useNoise){
+        coordScale *= noise;
+    }
+    
+    avg *= 0.125;
+
+    weightedCoords *= coordScale;
+    weightedCoords += sensPos;
+    float x = weightedCoords.x - p.x;
+    float y = weightedCoords.y - p.y;
+
+    float newAngle = atan2(y, x);
+
+    return float2(newAngle, avg);
+}
+
+float sensorSniff(Agent agent, float sensorAngle) {
+	float2 sensorDir = float2(cos(sensorAngle), sin(sensorAngle));
+    
+    if(useNoise){
+        float NS = noiseSeed;
+        float3 noiseInput = float3((agent.pos.x/noiseScale)+NS, (agent.pos.y/noiseScale)+NS, (clock/noiseScale)+NS);
+        float noiseOffset = 1;
+        float noise = (snoise(noiseInput) * steerControl) + noiseOffset;
+        sensorDistance*=noise;
+        sensorDistance = clamp(sensorDistance, minSensorDistance, maxSensorDistance);
+    }
+    
+	float2 sensorPos = agent.pos + (sensorDir * sensorDistance);
+	int sensorCentreX = (int) round(sensorPos.x);
+	int sensorCentreY = (int) round(sensorPos.y);
+	float sum = 0;
+    float densitySum = 0;
+    float ma = dot(identity, agent.species);
+    int size = 1;
+
+	for (int offsetX = -size; offsetX <= size; offsetX ++) {
+		for (int offsetY = -size; offsetY <= size; offsetY ++) {
+			int sampleX = min(WIDTH - 1, max(0, sensorCentreX + offsetX));
+			// int sampleX = floor(sensorCentreX + offsetX)%WIDTH;
+			// int sampleX = sensorCentreX + offsetX;
+			int sampleY = min(HEIGHT - 1, max(0, sensorCentreY + offsetY));
+			// int sampleY = sensorCentreY + offsetY;
+			// int sampleY = floor(sensorCentreY + offsetY)%HEIGHT;
+            float n = dot(agent.species, TrailMap[int2(sampleX,sampleY)]);
+            
+            sum += (n/ma);
+		}
+	}
+
+	return (sum / (9*ma));
+}
+
+
+float2 getDir(Agent agent, int numSensors){
+    float sensAngle = TAU/numSensors;
+    float2 top = (sensorSniff(agent, agent.angle), agent.angle);
+
+    for(int i = 0; i<numSensors; i++){
+        float r = sensorSniff(agent, agent.angle + (i*sensAngle));
+        if(r > top[0]){
+            top = float2(r, agent.angle + (i*sensAngle));
+        }
+    }
+    return top;
     
 }
+
+float scalerAdjust(float s){
+    // return pow(s, 2);
+    // return pow(s + 0.5, 8);
+    // return pow(s+0.01, 2);
+    // return pow(s-0.5, 3);
+    return pow((s)+accelerationScale/100, 21);
+    // return (s + 0.05);
+}
+
+
+
+
+[numthreads(32,32,1)]
+void Update (uint3 id : SV_DispatchThreadID){
+    int index = id.x + (WIDTH * id.y);
+    if(index > NumAgents){
+        return;
+    }
+    if(middleStart){
+        if(index>clock*500){
+            return;
+        }
+    }
+
+    Agent a = Agents[index];
+
+    float3 noiseInput = float3((a.pos.x/noiseScale), (a.pos.y/noiseScale), (clock/noiseScale));
+    noiseInput *= noiseSeed;
+    float noise = snoise(noiseSeed  + (noiseInput));
+
+    a.sensorDist = sensorDistance;
+    
+    if(useNoise){
+        a.sensorDist = max(sensorDistance * (noise), maxSensorDistance);
+    }
+        
+
+
+    
+
+    float scaler = 0;
+    float newA = a.angle;
+    if(!useSensors && !useCircleSense){
+        float2 sniff = vectorSniff(a.pos, randomAngle(a, 123), a.angle, a.v, a.species, 1231, a.sensorDist, a.foodState);
+        newA = sniff.x;
+        scaler = sniff.y;
+        
+        scaler = scalerAdjust(scaler);
+        float food = 0;
+        //if food is sniffed, then go to ending species
+
+        if(food > 0){
+            a.foodState = 1;
+            a.species = endingSpecies;
+            // a.speciesIndex = float4(0, 1, 0, 0);
+            a.hasFood += food;
+        }
+    } 
+
+    else if(useSensors){
+        float sensOffset = sensorOffsets/100;
+        float shift = turnAngle/100;
+
+        float left = sensorSniff(a, a.angle - sensOffset);
+        float middle = sensorSniff(a, a.angle);
+        float right = sensorSniff(a, a.angle + sensOffset);
+
+        if((left > middle) && (left > right)){
+            newA = a.angle - shift;
+            scaler = left;
+            
+        }
+        else if((right > middle) && (right > left)){
+            newA = a.angle + shift;
+            scaler = right;
+        }
+        else if((middle > right) && (middle > left)){
+            newA = a.angle;
+            scaler = .5;
+        }
+        else{
+            newA = a.angle += randomAngle(a, 1321);
+            scaler = hash(index); 
+        }
+    
+        scaler = scalerAdjust(scaler);
+    }
+    if(!reset){
+        a.angle = newA;
+    }
+    else if(useCircleSense){
+        int num = 3;
+        float2 res = getDir(a, num);
+        a.angle = res[1];
+        scaler = res[0];
+    }
+    // float speed = maxSpeed*baseMulti + min(scaler*scaler*0.01,maxSpeed);
+ 
+    float finalSpeed = a.speed * (speed/10);
+    a.angle += randomAngle(a, 123);
+    float2 velocity = float2(cos(a.angle), sin(a.angle));
+    velocity *= finalSpeed;
+    velocity *= DTime;
+
+    if(useAcceleration){
+        float2 sniff = vectorSniff(a.pos, 123, a.angle, a.v, a.species, 1231, a.sensorDist, a.foodState)[0];
+        float angle = sniff[0];
+        float avg = sniff[1];
+
+        float2 acc = float2(cos(angle), sin(angle));
+        acc *= scaler * accelerationScale;
+        velocity += acc;
+    }
+
+    
+    if(useScaler){
+        velocity *= scaler;
+    }
+
+    if(useInertia){
+        a.v += velocity; 
+        a.pos += a.v;
+        a.v *= velocityScale/10;
+    }
+    else{
+        a.pos += velocity;
+    }
+
+    if(a.pos.x < 0){
+        a.pos.x = WIDTH - abs(0-a.pos.x);
+        // a.pos.x = WIDTH;
+    }
+    if(a.pos.x > WIDTH){
+        a.pos.x = 0 + abs(a.pos.x - WIDTH);
+        // a.pos.x = 0;
+    }
+    if(a.pos.y < 0){
+        a.pos.y = HEIGHT - abs(0-a.pos.y);
+        // a.pos.y = HEIGHT;
+    }
+    if(a.pos.y > HEIGHT){
+        a.pos.y = 0 + abs(a.pos.y - HEIGHT);
+        // a.pos.y = 0;
+    }
+    
+
+    Agents[index] = a;
+}
+
+ 
+[numthreads(32,32,1)]
+void lay (uint3 id : SV_DispatchThreadID){
+    int index = id.x + (WIDTH * id.y);
+    if(index > NumAgents){
+        return;
+    }
+    if(middleStart){
+        if(index>clock*500){
+            return;
+        }
+    }
+    
+    Agent a = Agents[index];
+
+    float c = identity - TrailMap[int2(a.pos.x, a.pos.y)];
+    float4 col = (a.species * speciesOpacity/10);
+    float4 cur = TrailMap[int2(a.pos.x, a.pos.y)];
+    float4 curH = TrailMap[int2(a.pos.x, a.pos.y)];
+
+    // TrailMap[int2(a.pos.x+2, a.pos.y+2)] -= float4(.1, .1, .1, .1); 
+    // TrailMap[int2(a.pos.x+1, a.pos.y+2)] -= c*.5;
+    
+    TrailMap[int2(a.pos.x, a.pos.y)] += col; 
+    // HeightMap[int2(a.pos.x, a.pos.y)] += col/2;
+
+    // https://rgbcolorpicker.com/0-1
+    if(a.speciesIndex.x == -1){
+        a.species = heightSpec1;
+        float4 color = float4(0.49,0.678,0.486,1)/heightSpeciesOpacity;
+        // HeightMap[int2(a.pos.x-3, a.pos.y-2)] += .5;
+        HeightMap[int2(a.pos.x, a.pos.y)] += heightSpec1 / heightSpeciesOpacity;
+        // HeightMap[int2(a.pos.x+3, a.pos.y+2)] -= .5;
+ 
+        // HeightMap[int2(a.pos.x, a.pos.y)] -= 1 * heightSpeciesOpacity;
+    }
+    else{
+        a.species = heightSpec2;
+        float4 color = float4(0.278, 0.302, 0.278,1)/heightSpeciesOpacity;
+        // HeightMap[int2(a.pos.x-3, a.pos.y-2)] += .5;
+        HeightMap[int2(a.pos.x, a.pos.y)] += heightSpec2 / heightSpeciesOpacity;
+        // HeightMap[int2(a.pos.x+3, a.pos.y+2)] -= .5;
+ 
+        // HeightMap[int2(a.pos.x, a.pos.y)] -= 1 * heightSpeciesOpacity;
+    }
+}
+
+[numthreads(16,16,1)]
+void blur (uint3 id : SV_DispatchThreadID)
+{   
+    int index =  (id.y * WIDTH) + id.x;
+    
+    if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
+		return;
+	}
+
+	float4 sum = 0;
+	float4 sum2 = 0;
+	float4 originalCol = TrailMap[id.xy];
+	float4 originalCol2 = HeightMap[id.xy];
+
+	for (int offsetX = -1; offsetX <= 1; offsetX ++) {
+		for (int offsetY = -1; offsetY <= 1; offsetY ++) {
+            int sampleX = id.x + offsetX;
+			int sampleY = id.y + offsetY;
+            float4 sample = TrailMap[int2(sampleX,sampleY)];
+			sum += sample;
+		}
+	}
+
+    float diffuseRate = control1;
+    float decayRate = control2/10;
+
+    //animated blur
+    // decayRate = (clock%50)/7 + 0.01;
+	float4 blurredCol = sum / 9;
+	float4 blurredCol2 = sum2 / 9;
+
+
+	float diffuseWeight = saturate(float(diffuseRate * DTime));
+	blurredCol = originalCol * (1 - diffuseWeight) + blurredCol * (diffuseWeight);    
+	blurredCol2 = originalCol * (1 - diffuseWeight) + blurredCol2 * (diffuseWeight);    
+    // HeightMap[id.xy] -= 0.1;
+	TrailMap[id.xy] =  min(max(0, blurredCol - decayRate * DTime), 1);
+}
+
+[numthreads(32,32,1)]
+void fillTexture (uint3 id : SV_DispatchThreadID){
+    int index =  (id.y * WIDTH) + id.x;
+    
+    if (id.x < 0 || id.x >= WIDTH || id.y < 0 || id.y >= HEIGHT) {
+		return;
+	}
+    TrailMap[id.xy] = fieldColor;
+}
+

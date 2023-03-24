@@ -3,7 +3,11 @@ guid: 8551c25f1702f1749a261f0989f680a6
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - shader: {fileID: 7200000, guid: a934bbad341d78e46a1b9ff0bb2414ba, type: 3}
+  - heightMap: {fileID: 8400000, guid: dd09752598f18244a80b5432c0abf51e, type: 2}
+  - trailTexture: {fileID: 8400000, guid: 4d82fcb92d96f834091d89cc7e351347, type: 2}
+  - mat: {fileID: 2100000, guid: 3edfbda9f4d91ee468e5016c8e0adc22, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
